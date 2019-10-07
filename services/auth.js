@@ -7,7 +7,7 @@ const router = new Router();
 
 const secret = 'secret';
 
-router.post('/tokens', (req, res) => {
+router.post('/', (req, res) => {
   const { email, login, password } = req.body;
 
   const p1 = profiles.find(x => x.email === email);
@@ -27,6 +27,7 @@ router.post('/tokens', (req, res) => {
     id: profile.id,
     email: profile.email,
     login: profile.login,
+    roles: profile.roles,
   }, secret, { expiresIn: '12h' });
 
   res.json({ token });

@@ -2,16 +2,17 @@ const { Router } = require('express');
 
 const profiles = require('../db/profiles');
 const auth = require('../middlewares/auth');
+const utils = require('../utils');
 
 const router = new Router();
 
 router.use(auth);
 
-router.get('/profiles', (req, res) => {
-  res.json(profiles);
+router.get('/', (req, res) => {
+  res.json(utils.toCollection(profiles));
 });
 
-router.post('/profiles', (req, res) => {
+router.post('/', (req, res) => {
   const { body = {} } = req;
 
   if (!body.email) {
@@ -28,7 +29,7 @@ router.post('/profiles', (req, res) => {
   res.json(body);
 });
 
-router.get('/profiles/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   const { params } = req;
   const id = params.id;
 
@@ -39,7 +40,7 @@ router.get('/profiles/:id', (req, res) => {
   res.status(404).json({ message: 'Profile not found' });
 });
 
-router.patch('/profiles/:id', (req, res) => {
+router.patch('/:id', (req, res) => {
   const id = req.params.id;
   const { body } = req;
 
@@ -51,7 +52,7 @@ router.patch('/profiles/:id', (req, res) => {
   res.status(404).json({ message: 'Profile not found' });
 });
 
-router.put('/profiles/:id/email', (req, res) => {
+router.put('/:id/email', (req, res) => {
   const id = req.params.id;
   const { body } = req;
 
@@ -75,7 +76,7 @@ router.put('/profiles/:id/email', (req, res) => {
   res.json(profile);
 });
 
-router.put('/profiles/:id/password', (req, res) => {
+router.put('/:id/password', (req, res) => {
   const id = req.params.id;
   const { body } = req;
 

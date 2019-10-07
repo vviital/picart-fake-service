@@ -5,7 +5,7 @@ const { Router } = require('express');
 
 const router = new Router();
 
-router.get('/images/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   const filepath = path.join(__dirname, 'image.png')
   fs.createReadStream(filepath).pipe(res);
 });
