@@ -6,8 +6,6 @@ const utils = require('../../utils');
 
 const router = new Router();
 
-console.log('--- utils ---', utils);
-
 router.use(auth);
 
 router.get('/', (req, res) => {
