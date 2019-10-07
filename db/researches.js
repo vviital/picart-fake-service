@@ -17,6 +17,8 @@ module.exports = {
         id: 2,
         type: 'file',
       }],
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     },
     {
       id: 1,
@@ -35,6 +37,8 @@ module.exports = {
         id: 5,
         type: 'file',
       }],
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     }
   ],
 };

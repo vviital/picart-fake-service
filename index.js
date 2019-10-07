@@ -7,6 +7,7 @@ const profiles = require('./services/profiles');
 const tokens = require('./services/auth');
 const images = require('./services/images');
 const researchers = require('./services/researchers');
+const files = require('./services/files');
 
 const app = express();
 
@@ -17,5 +18,6 @@ app.use('/profiles', profiles);
 app.use('/tokens', tokens);
 app.use('/images', images);
 app.use('/researches', researchers);
+app.use('/files', files);
 
 app.listen(3000);

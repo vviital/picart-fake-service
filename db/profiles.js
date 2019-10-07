@@ -6,6 +6,8 @@ const profiles = [
     email: 'name.surname_1@test.com',
     password: '12345678',
     login: 'test 1',
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
   },
   {
     id: 1,
@@ -14,6 +16,8 @@ const profiles = [
     email: 'name.surname_2@test.com',
     password: '12345678',
     login: 'test 2',
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
   },
   {
     id: 2,
@@ -22,6 +26,8 @@ const profiles = [
     email: 'name.surname_3@test.com',
     password: '12345678',
     login: 'test 3',
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
   },
 ];
 
