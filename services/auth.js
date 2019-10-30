@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
   }
 
   if (profile.password !== password) {
-    return res.json(401).json({ message: 'Password is wrong' });
+    return res.json(400).json({ message: 'Password is wrong' });
   }
 
   const token = jwt.sign({

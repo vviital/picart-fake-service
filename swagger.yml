@@ -1,0 +1,707 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Swagger PicArt
+  license:
+    name: MIT
+servers:
+  - url: http://picart.swagger.io/v1
+
+security:
+  - BearerAuth: []
+
+paths:
+  /profiles:
+    get:
+      summary: Returns all profiles under the certain query.
+      tags:
+        - profiles
+      parameters:
+        - name: limit
+          in: query
+          description: number of profiles to return
+          required: false
+          default: 25
+          schema:
+            type: integer
+            format: int32
+        - name: offset
+          in: query
+          description: number of profiles to skip
+          required: false
+          default: 0
+          schema:
+            type: integer
+            format: int32
+        - name: q
+          in: query
+          description: query string to search, e.g. q="Test" returns all profiles with "Test" keyword in it.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paged array of profiles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: 
+                      $ref: "#/components/schemas/Profile"
+                  limit:
+                    type: integer
+                    format: int32
+                    default: 25
+                  offset:
+                    type: integer
+                    format: int32
+                    default: 0
+                  totalCount:
+                    type: integer
+                    format: int32
+                    default: 0
+                  type:
+                    type: string
+                    default: "collection"
+        '401':
+          description: authorization failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+    post:
+      summary: creates a profile
+      tags:
+        - profiles
+      requestBody:
+        description: Data to create user.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+                - email
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                name:
+                  type: string
+                surname:
+                  type: string
+                login:
+                 type: string                   
+      responses:
+        '201':
+          description: returns created profile.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        '400':
+          description: bad request API error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: authorization failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+  /profiles/{profileID}:
+    parameters:
+      - name: profileID
+        in: path
+        required: true
+        description: The id of profile to retrieve.
+        schema:
+          type: string
+    get:
+      summary: return specific profile.
+      tags:
+        - profiles
+      responses:
+        '200':
+          description: user profile.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        '401':
+          description: authorization failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+        '404':
+            description: profile not found.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error" 
+    patch:
+      summary: update profile values (expect email and password).
+      tags:
+        - profiles
+      requestBody:
+        description: Data to update user.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: user profile.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        '401':
+          description: authorization failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+        '404':
+            description: profile not found.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+  /profiles/{profileID}/email:
+    parameters:
+      - name: profileID
+        in: path
+        required: true
+        description: The id of profile to retrieve.
+        schema:
+          type: string
+    put:
+      summary: update profile email.
+      tags:
+        - profiles
+      requestBody:
+        description: Data to update user email.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - confirmationPassword
+                - email
+              properties:
+                confirmationPassword:
+                  type: string
+                email:
+                  type: string
+      responses:
+        '200':
+          description: user profile.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        '400':
+          description: bad request API error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: authorization failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+        '404':
+            description: profile not found.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+  /profiles/{profileID}/password:
+    parameters:
+      - name: profileID
+        in: path
+        required: true
+        description: The id of profile to retrieve.
+        schema:
+          type: string
+    put:
+      summary: update profile email.
+      tags:
+        - profiles
+      requestBody:
+        description: Data to update user email.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - confirmationPassword
+                - password
+              properties:
+                confirmationPassword:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: user profile.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        '400':
+          description: bad request API error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: authorization failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+        '404':
+            description: profile not found.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"           
+
+  /tokens:
+    post:
+      security: []
+      tags:
+        - tokens
+      summary: creates new authorization token.
+      requestBody:
+        description: Data to create token.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                login:
+                 type: string   
+      responses:
+        '200':
+          description: generated token.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Token"
+        '400':
+          description: bad request API error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: authorization failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+        '404':
+            description: profile not found.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"           
+
+  /images/{imageID}:
+    get:
+      security: []
+      tags:
+        - images
+      summary: fetch image by ID.
+      parameters:
+        - name: imageID
+          in: path
+          required: true
+          description: The id of image to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: generated token.
+          content:
+            image/*:
+              schema: 
+                type: string
+                format: binary
+        '404':
+            description: profile not found.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error" 
+
+  /files:
+    get:
+      summary: Returns all files under the certain query.
+      tags:
+        - files
+      parameters:
+        - name: limit
+          in: query
+          description: number of files to return
+          required: false
+          default: 25
+          schema:
+            type: integer
+            format: int32
+        - name: offset
+          in: query
+          description: number of files to skip
+          required: false
+          default: 0
+          schema:
+            type: integer
+            format: int32
+        - name: q
+          in: query
+          description: query string to search, e.g. q="Test" returns all files with "Test" keyword in the description.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paged array of files
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: 
+                      $ref: "#/components/schemas/File"
+                  limit:
+                    type: integer
+                    format: int32
+                    default: 25
+                  offset:
+                    type: integer
+                    format: int32
+                    default: 0
+                  totalCount:
+                    type: integer
+                    format: int32
+                    default: 0
+                  type:
+                    type: string
+                    default: "collection"
+        '401':
+          description: authorization failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+    post:
+      summary: creates a file
+      tags:
+        - files
+      requestBody:
+        description: Data to create file.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/File"               
+      responses:
+        '201':
+          description: returns created file.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/File"
+        '400':
+          description: bad request API error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: authorization failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+  /files/{fileID}:
+    get:
+      summary: creates a file
+      tags:
+        - files
+      parameters:
+        - name: fileID
+          in: path
+          required: true
+          description: The id of file to retrieve.
+          schema:
+            type: string            
+      responses:
+        '201':
+          description: returns created file.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/File"
+        '401':
+          description: authorization failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /researches:
+    get:
+      summary: Return all researcher under the certain query.
+      tags:
+        - researches
+      parameters:
+        - name: limit
+          in: query
+          description: number of researches to return
+          required: false
+          default: 25
+          schema:
+            type: integer
+            format: int32
+        - name: offset
+          in: query
+          description: number of researches to skip
+          required: false
+          default: 0
+          schema:
+            type: integer
+            format: int32
+        - name: q
+          in: query
+          description: query string to search, e.g. q="Test" returns all researches with "Test" keyword in the description.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paged array of researches
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: 
+                      $ref: "#/components/schemas/Research"
+                  limit:
+                    type: integer
+                    format: int32
+                    default: 25
+                  offset:
+                    type: integer
+                    format: int32
+                    default: 0
+                  totalCount:
+                    type: integer
+                    format: int32
+                    default: 0
+                  type:
+                    type: string
+                    default: "collection"
+        '401':
+          description: authorization failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+    post:
+      summary: creates a research
+      tags:
+        - researches
+      requestBody:
+        description: Data to create research.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Research"               
+      responses:
+        '201':
+          description: returns created research.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Research"
+        '400':
+          description: bad request API error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: authorization failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+  /researches/{researchID}:
+    parameters:
+      - name: researchID
+        in: path
+        required: true
+        description: The id of research to retrieve.
+        schema:
+          type: string
+    get:
+      summary: return specific research.
+      tags:
+        - researches
+      responses:
+        '200':
+          description: user research.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Research"
+        '401':
+          description: authorization failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+        '404':
+            description: profile not found.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error" 
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    Profile:
+      type: object
+      required:
+        - id
+        - email
+        - login
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        email:
+          type: string
+          format: email
+        login:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        updatedAt:
+          type: integer
+          format: int64
+    Token:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+    File:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        points:
+          type: array
+          items:
+            type: object
+            properties:
+              waveLength:
+                type: number
+                format: double
+              intensity:
+                type: number
+                format: double
+        ownerID:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        updatedAt:
+          type: integer
+          format: int64
+    Research:
+      type: object
+      required:
+        - id
+        - ownerID
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        researchType:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        ownerID:
+          type: string
+        files:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              type:
+                type: string
+        createdAt:
+          type: integer
+          format: int64
+        updatedAt:
+          type: integer
+          format: int64
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
