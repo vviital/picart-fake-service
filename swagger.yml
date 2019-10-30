@@ -21,18 +21,18 @@ paths:
           in: query
           description: number of profiles to return
           required: false
-          default: 25
           schema:
             type: integer
             format: int32
+            default: 25
         - name: offset
           in: query
           description: number of profiles to skip
           required: false
-          default: 0
           schema:
             type: integer
             format: int32
+            default: 0
         - name: q
           in: query
           description: query string to search, e.g. q="Test" returns all profiles with "Test" keyword in it.
@@ -368,18 +368,18 @@ paths:
           in: query
           description: number of files to return
           required: false
-          default: 25
           schema:
             type: integer
             format: int32
+            default: 25
         - name: offset
           in: query
           description: number of files to skip
           required: false
-          default: 0
           schema:
             type: integer
             format: int32
+            default: 0
         - name: q
           in: query
           description: query string to search, e.g. q="Test" returns all files with "Test" keyword in the description.
@@ -485,18 +485,18 @@ paths:
           in: query
           description: number of researches to return
           required: false
-          default: 25
           schema:
             type: integer
             format: int32
+            default: 25
         - name: offset
           in: query
           description: number of researches to skip
           required: false
-          default: 0
           schema:
             type: integer
             format: int32
+            default: 0
         - name: q
           in: query
           description: query string to search, e.g. q="Test" returns all researches with "Test" keyword in the description.
