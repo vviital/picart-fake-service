@@ -2,11 +2,11 @@ const _ = require('lodash');
 
 const createPoints = (times = 2000) => {
   const array = _.times(times).map(x => ({
-    waveLength: Math.random() * 1000,
-    intensity: Math.random() * 1000,
+    x: Math.random() * 1000,
+    y: Math.random() * 1000,
   }));
 
-  return _.sortBy(array, x => x.waveLength);
+  return _.sortBy(array, x => x.x);
 };
 
 const createFile = (id = 0, owner = 0) => ({
